@@ -3,7 +3,7 @@ const passport = require("passport");
 const User = require("../models/user");
 const jwtSecret = require("../config/jwt-config");
 
-/// Users Controllers ///
+/// User Controller ///
 
 /* User Login */
 exports.userLogin = (req, res, next) => {
@@ -20,12 +20,10 @@ exports.userLogin = (req, res, next) => {
             }
         } else {
             req.logIn(users, () => {
-                model.User.findOne({
-                    where: {
-                        username: req.body.username
-                    }
+                User.findOne({
+                    username: req.body.username
                 }).then(user => {
-                    const token = jwt.sign({ id: user.id }, jwtSecret.secret, {
+                    const token = jwt.sign({id: user.id}, jwtSecret.secret, {
                         expiresIn: 60 * 60
                     });
                     res.status(200).send({
@@ -41,7 +39,7 @@ exports.userLogin = (req, res, next) => {
 };
 
 
-/* User Register Controller */
+/* User Register */
 exports.userRegister = (req, res, next) => {
     passport.authenticate('register', (err, user, info) => {
         if (err) {
@@ -54,23 +52,28 @@ exports.userRegister = (req, res, next) => {
                 const data = {
                     first_name: req.body.first_name,
                     last_name: req.body.last_name,
-                    email: req.body.email,
                     username: req.body.username,
+                    password: req.body.password,
+                    city: req.body.city,
+                    street: req.body.street,
+                    personal_id: req.body.personal_id,
                 };
                 console.log(data);
-                model.User.findOne({
-                    where: {
-                        username: data.username,
-                    },
+                User.findOne({
+                    username: data.username
                 }).then(user => {
                     user
                         .update({
                             first_name: data.first_name,
                             last_name: data.last_name,
-                            email: data.email,
+                            username: data.username,
+                            password: data.password,
+                            city: data.city,
+                            street: data.street,
+                            personal_id: data.personal_id,
                         })
                         .then(() => {
-                            res.status(200).send({ message: 'user created' });
+                            res.status(200).send({message: 'user created'});
                         });
                 });
             });
@@ -79,18 +82,4 @@ exports.userRegister = (req, res, next) => {
 };
 
 
-/* Check Username availability */
-exports.nameCheck = async (req,res)=>{
-    model.User.findOne({
-        where: {
-            username: req.params.username
-        }
-    }).then(user => {
-        console.log("user");
-        if(user!==null){
-            return   res.status(302).send({found:true})
-        }
-        res.status(201).send({found:false})
 
-    })
-};

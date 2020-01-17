@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-
 const productSchema = new mongoose.Schema({  //was let
-    item_id: Number,
+    id: Number,
     product_id: Number,
     cart_id:Number,
     quantity:Number,
@@ -9,4 +8,4 @@ const productSchema = new mongoose.Schema({  //was let
 
 });
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('CartItem', productSchema);

@@ -34,12 +34,11 @@ db.once('open', function() {
 });
 app.use('/uploads',express.static('uploads'));
 app.use(passport.initialize());
-//app.use('/shop', shopRouter);
 app.use('/user', userRouter);
 app.use(
     "/shop",
     passport.authenticate("jwt", { session: false }),
-    userRouter
+    shopRouter
 );
 // catch 404 and forward to error handler
 /*app.use(function(req, res, next) {

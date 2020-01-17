@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-
 const categorySchema = new mongoose.Schema({  //was let
-    cat_id: Number,
+    id: Number,
     title: String
 });
 

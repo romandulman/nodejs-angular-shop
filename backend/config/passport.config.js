@@ -4,9 +4,8 @@ const LocalStrategy = require("passport-local").Strategy;
 const JWTstrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
 const jwtSecret = require("./jwt-config");
-const model = require("../models");
+const User = require("../models/user");
 
-const Op = Sequelize.Op;
 
 passport.use(
     'register',
@@ -18,19 +17,14 @@ passport.use(
             session: false,
         },
         (req, username, password, done) => {
-            console.log(username);
-            console.log(req.body.email);
+           // console.log(username);
+           // console.log(req.body.email);
 
             try {
-                model.User.findOne({
-                    where: {
-                        [Op.or]: [
-                            {
-                                username,
-                            },
-                            { email: req.body.email },
-                        ],
-                    },
+                User.findOne(//username
+                   {  username: username
+
+
                 }).then(user => {
                     if (user != null) {
                         console.log('username or email already taken');
@@ -39,10 +33,11 @@ passport.use(
                         });
                     }
                     // bcrypt.hash(password, BCRYPT_SALT_ROUNDS).then(hashedPassword => {
-                    model.User.create({
+                    User.create({
                         username,
                         password: password ,//hashedPassword,
-                        email: req.body.email,
+                       // email: req.body.email,
+
                     }).then(user => {
                         console.log('user created');
                         return done(null, user);
@@ -67,10 +62,10 @@ passport.use(
         },
         (username, password, done) => {
             try {
-                model.User.findOne({
-                    where: {
-                        username
-                    }
+                User.findOne({
+
+                    username:username
+
                 }).then(user => {
                     if (user === null) {
                         return done(null, false, { message: "bad username" });
@@ -99,10 +94,10 @@ passport.use(
     "jwt",
     new JWTstrategy(opts, (jwt_payload, done) => {
         try {
-            model.User.findOne({
-                where: {
+            User.findOne({
+
                     id: jwt_payload.id
-                }
+
             }).then(user => {
                 if (user) {
                     console.log("user found in db in passport");

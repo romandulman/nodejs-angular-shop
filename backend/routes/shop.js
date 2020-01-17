@@ -1,8 +1,14 @@
 const express = require('express');
-const router = express.Router();
+const shopRouter = express.Router();
+const adminController = require("../controllers/admin.controller");
+const adminVerify = require('../middlewares/admin');
+const shopController = require("../controllers/shop.controller");
 
-router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express' });
-});
+shopRouter.post("/cart", shopController.addToCart);
+shopRouter.put("/cart", shopController.removeFromCart);
+shopRouter.post("/order", shopController.makeOrder);
 
-module.exports = router;
+shopRouter.post("/admin/add", adminVerify ,adminController.createProduct);
+shopRouter.put("/admin/update/:id", adminVerify ,adminController.updateProduct);
+
+module.exports = shopRouter;
