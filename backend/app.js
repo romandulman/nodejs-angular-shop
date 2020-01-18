@@ -34,9 +34,9 @@ db.once('open', function() {
 });
 app.use('/uploads',express.static('uploads'));
 app.use(passport.initialize());
-app.use('/user', userRouter);
+app.use('/api/user', userRouter);
 app.use(
-    "/shop",
+    "/api/shop",
     passport.authenticate("jwt", { session: false }),
     shopRouter
 );

@@ -7,20 +7,23 @@ exports.getAllProducts = (req, res) =>{
   Product.find().populate("cat_id")
  .then(products=>{
      res.status(200).send({products:products});
- }
- )
-
+ })
 };
 
+exports.getProductsById = (req, res) =>{
+ Product.find({'cat_id':req.params.id}).populate("cat_id")
+     .then(products=>{
+      res.status(200).send({products:products});
+     })
+};
 
 exports.getUserCartItems = (req,res)=>{
 Cart.findOne({'user_id':req.user._id})//).populate("user_id");
     .then(checkExistingCart =>{
  if(checkExistingCart !== null ){
- // res.send({cart:checkExistingCart});
 CartItem.find({'cart_id': checkExistingCart._id }).populate("product_id")
     .then(items=>{
-     res.send({cart:items});
+     res.send({cart_items:items});
     })
  }
 })

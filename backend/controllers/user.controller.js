@@ -58,7 +58,6 @@ exports.userRegister = (req, res, next) => {
                     street: req.body.street,
                     personal_id: req.body.personal_id,
                 };
-                console.log(data);
                 User.findOne({
                     username: data.username
                 }).then(user => {
@@ -73,7 +72,7 @@ exports.userRegister = (req, res, next) => {
                             personal_id: data.personal_id,
                         })
                         .then(() => {
-                            res.status(200).send({message: 'user created'});
+                            res.status(201).send({message: 'user created'});
                         });
                 });
             });

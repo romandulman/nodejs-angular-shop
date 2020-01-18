@@ -7,7 +7,10 @@ const userSchema = new mongoose.Schema({  //was let
         street: String,
         personal_id: String,
         password: String,
-        is_admin: Boolean
+        is_admin: {
+                type:Boolean,
+                default:false
+        }
     }, {timestamps: {created_at: 'created_at'}}
 );
 
