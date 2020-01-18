@@ -1,5 +1,5 @@
 const adminCheck = (req, res, next) => {
-    const adminRole = req.user.dataValues.role === 1;
+    const adminRole = req.user.is_admin === true;
     if (!adminRole) {
         res.status(401).json({
             authenticated: false,

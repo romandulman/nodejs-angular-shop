@@ -96,7 +96,7 @@ passport.use(
         try {
             User.findOne({
 
-                    id: jwt_payload.id
+                    _id: jwt_payload.id
 
             }).then(user => {
                 if (user) {

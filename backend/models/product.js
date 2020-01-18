@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
-    id: Number,
     product_name: String,
-    cat_id: Number,
+    cat_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category'
+    },
     price: Number,
     image_url: String,
 }, {timestamps: {created_at: 'created_at'}});

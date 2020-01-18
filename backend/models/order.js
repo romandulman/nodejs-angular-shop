@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
-        id: Number,
-        user_id: Number,
-        cart_id: Number,
+        user_id:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User'
+        },
+        cart_id:{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Cart'
+        },
         total_price: Number, // for whole order
         city: String,
         street: String,
