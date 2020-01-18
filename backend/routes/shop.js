@@ -9,12 +9,12 @@ shopRouter.get("/products/:id", shopController.getProductsById);
 
 shopRouter.get("/cart", shopController.getUserCartItems);
 shopRouter.post("/cart", shopController.addToCart);
-shopRouter.delete("/cart", shopController.removeFromCart);
+shopRouter.delete("/cart/:id", shopController.removeFromCart);
 
-shopRouter.post("/order", shopController.makeOrder);
+shopRouter.post("/checkout", shopController.checkOutOrder);
 
 shopRouter.post("/admin/product", adminVerify ,adminController.createProduct);
 shopRouter.put("/admin/product/:id", adminVerify ,adminController.updateProduct);
-shopRouter.post("/admin/category/add", adminVerify ,adminController.createCategory);
+shopRouter.post("/admin/category", adminVerify ,adminController.createCategory);
 
 module.exports = shopRouter;
