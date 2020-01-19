@@ -10,7 +10,7 @@ exports.getAllProducts = (req, res) => {
         })
 };
 
-exports.getProductsById = (req, res) => {
+exports.getProductsByCatId = (req, res) => {
     Product.find({'cat_id': req.params.id}).populate("cat_id")
         .then(products => {
             res.status(200).send({products: products});

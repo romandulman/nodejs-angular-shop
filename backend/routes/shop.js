@@ -5,7 +5,7 @@ const adminVerify = require('../middlewares/admin');
 const shopController = require("../controllers/shop.controller");
 
 shopRouter.get("/products", shopController.getAllProducts);
-shopRouter.get("/products/:id", shopController.getProductsById);
+shopRouter.get("/products/:id", shopController.getProductsByCatId);
 
 shopRouter.get("/cart", shopController.getUserCartItems);
 shopRouter.post("/cart", shopController.addToCart);

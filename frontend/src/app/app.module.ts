@@ -14,12 +14,13 @@ import { RegisterComponent } from './user/register/register.component';
 import { MainComponent } from './main/main.component';
 import { OrderComponent } from './order/order.component';
 import { ShopComponent } from './shop/shop.component';
+import { CartComponent } from './models/cart/cart.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
 }
 const routes: Routes = [
-  { path: '/', component: AppComponent },
+  { path: '', component: AppComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'shop', component: ShopComponent },
@@ -38,6 +39,7 @@ const routes: Routes = [
     MainComponent,
     OrderComponent,
     ShopComponent,
+    CartComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,11 +48,13 @@ const routes: Routes = [
     NgbModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: tokenGetter,
-        whitelistedDomains: ['example.com'],
-        blacklistedRoutes: ['example.com/examplebadroute/']
+        tokenGetter: function  tokenGetter() {
+          return     localStorage.getItem('access_token');},
+        whitelistedDomains: ['localhost:3000'],
+        blacklistedRoutes: ['http://localhost:3000/auth/login']
       }
     })
+
   ],
   providers: [],
   bootstrap: [AppComponent]
