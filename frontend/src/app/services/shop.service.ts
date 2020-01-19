@@ -25,7 +25,7 @@ export class ShopService {
   }
 
   public checkOutOrder(data) {
-    return this.httpClient.post(`http://localhost:8080/api/shop/cart`, {product_id: data.product_id, quantity: data.quantity});
+    return this.httpClient.post(`http://localhost:8080/api/shop/cart/checkout`, {product_id: data.product_id, quantity: data.quantity});
   }
 
 }

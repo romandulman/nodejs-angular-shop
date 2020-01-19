@@ -70,11 +70,23 @@ exports.removeFromCart = (req, res) => {
 
 
 exports.checkOutOrder = async (req, res, next) => {
+    const checkExistingCart = await Cart.findOne({'user_id': req.user._id});
+    const getCartItems = await CartItem.find({'cart_id': checkExistingCart._id});
+   const totalPrice = await getCartItems.reduce((a, b) => ({
+       total_price: a.price + b.price
+   }));
     const newOrder = new Order({
-        product_id: productExists._id,
+        user_id:req.user._id,
         cart_id: checkExistingCart._id,
-        quantity: req.body.quantity,
-        total_price: req.body.quantity * productExists.price,
+        total_price: totalPrice,
+        city: req.user.city,
+        street: req.user.street,
+        order_send_date: req.body.order_send_date,
+        last_cc_digits: req.body.last_cc_digits
     });
+    newOrder.save((err, newOrder) => {
+        if (err) return console.error(err);
+        res.status(201).send({new_order: newOrder})
+    })
 };
 
