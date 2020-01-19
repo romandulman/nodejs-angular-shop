@@ -11,7 +11,7 @@ shopRouter.get("/cart", shopController.getUserCartItems);
 shopRouter.post("/cart", shopController.addToCart);
 shopRouter.delete("/cart/:id", shopController.removeFromCart);
 
-shopRouter.post("/checkout", shopController.checkOutOrder);
+shopRouter.post("/cart/checkout", shopController.checkOutOrder);
 
 shopRouter.post("/admin/product", adminVerify ,adminController.createProduct);
 shopRouter.put("/admin/product/:id", adminVerify ,adminController.updateProduct);

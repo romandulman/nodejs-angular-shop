@@ -69,7 +69,12 @@ exports.removeFromCart = (req, res) => {
 };
 
 
-exports.checkOutOrder = (req, res, next) => {
-
+exports.checkOutOrder = async (req, res, next) => {
+    const newOrder = new Order({
+        product_id: productExists._id,
+        cart_id: checkExistingCart._id,
+        quantity: req.body.quantity,
+        total_price: req.body.quantity * productExists.price,
+    });
 };
 
