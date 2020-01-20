@@ -1,5 +1,4 @@
 //"use strict";
-
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -19,25 +18,27 @@ require("./config/passport.config");
 const app = express();
 
 app.use(helmet()); // Minimal Security to shop app
-app.use(cors())
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-mongoose.connect('mongodb://192.168.99.100/test', {useNewUrlParser: true,useUnifiedTopology: true});
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "uploads")));
+app.use('/uploads', express.static('uploads'));
+mongoose.connect('mongodb://192.168.99.100/test', {useNewUrlParser: true, useUnifiedTopology: true});
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('connected')
+db.once('open', function () {
+    console.log('connected')
 });
-app.use('/uploads',express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
 app.use(passport.initialize());
 app.use('/api/user', userRouter);
 app.use(
     "/api/shop",
-    passport.authenticate("jwt", { session: false }),
+    passport.authenticate("jwt", {session: false}),
     shopRouter
 );
 // catch 404 and forward to error handler
