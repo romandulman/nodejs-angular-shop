@@ -3,6 +3,8 @@ const Cart = require('../models/cart');
 const CartItem = require('../models/cart_item');
 const Order = require('../models/order');
 
+
+/*Get all products*/
 exports.getAllProducts = (req, res) => {
     Product.find().populate("cat_id")
         .then(products => {
@@ -10,6 +12,7 @@ exports.getAllProducts = (req, res) => {
         })
 };
 
+/*Get product by ID*/
 exports.getProductsByCatId = (req, res) => {
     Product.find({'cat_id': req.params.id}).populate("cat_id")
         .then(products => {
@@ -17,6 +20,7 @@ exports.getProductsByCatId = (req, res) => {
         })
 };
 
+/*Get user cart items*/
 exports.getUserCartItems = (req, res) => {
     Cart.findOne({'user_id': req.user._id})//).populate("user_id");
         .then(checkExistingCart => {
@@ -32,6 +36,7 @@ exports.getUserCartItems = (req, res) => {
         })
 };
 
+/*Add product to Cart*/
 exports.addToCart = async (req, res) => {
     let checkExistingCart = await Cart.findOne({'user_id': req.user._id});//).populate("user_id");
     if (checkExistingCart === null) {
@@ -59,6 +64,7 @@ exports.addToCart = async (req, res) => {
     }
 };
 
+/*Remove item from Cart*/
 exports.removeFromCart = (req, res) => {
     CartItem.deleteOne({'_id': req.params.id},
         err => {
@@ -68,17 +74,17 @@ exports.removeFromCart = (req, res) => {
     res.status(200).send('Item ' + req.params.id + ' Removed')
 };
 
-
+/*Checkout Order */
 exports.checkOutOrder = async (req, res, next) => {
     const checkExistingCart = await Cart.findOne({'user_id': req.user._id});
     const getCartItems = await CartItem.find({'cart_id': checkExistingCart._id});
    const totalPrice = await getCartItems.reduce((a, b) => ({
-       total_price: a.price + b.price
+       total_price: a.total_price + b.total_price
    }));
     const newOrder = new Order({
         user_id:req.user._id,
         cart_id: checkExistingCart._id,
-        total_price: totalPrice,
+        total_price: JSON.stringify(totalPrice.total_price),
         city: req.user.city,
         street: req.user.street,
         order_send_date: req.body.order_send_date,

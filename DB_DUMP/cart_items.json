@@ -1,0 +1,2 @@
+{"_id":{"$oid":"5e238c3be6376116d837c84e"},"product_id":{"$oid":"5e235e624c1e451e28b4d741"},"cart_id":{"$oid":"5e238a889a30b805d843d3bb"},"quantity":{"$numberInt":"3"},"total_price":{"$numberInt":"120"},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5e26069544af772998c646e1"},"product_id":{"$oid":"5e235ec34c1e451e28b4d743"},"cart_id":{"$oid":"5e238a889a30b805d843d3bb"},"quantity":{"$numberInt":"2"},"total_price":{"$numberInt":"300"},"__v":{"$numberInt":"0"}}
