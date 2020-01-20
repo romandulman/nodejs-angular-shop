@@ -1,10 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
-import { FormControl } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { JwtModule } from '@auth0/angular-jwt';
-import { HttpClientModule } from '@angular/common/http';
-
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './user/login/login.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -14,19 +12,18 @@ import { RegisterComponent } from './user/register/register.component';
 import { MainComponent } from './main/main.component';
 import { OrderComponent } from './order/order.component';
 import { ShopComponent } from './shop/shop.component';
-import { CartComponent } from './models/cart/cart.component';
+import { AuthGuard} from './helpers/auth.guard';
+import {JwtInterceptor} from './helpers/jwt.interceptor';
+import {ErrorInterceptor} from './helpers/error.interceptor';
 
-export function tokenGetter() {
-  return localStorage.getItem('access_token');
-}
+
+
 const routes: Routes = [
-  { path: '', component: AppComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent  },
   { path: 'register', component: RegisterComponent },
-  { path: 'shop', component: ShopComponent },
-  { path: 'order', component: OrderComponent },
-  { path: 'admin', component: AdminPanelComponent }
-
+  { path: 'shop', component: ShopComponent, canActivate: [AuthGuard]},
+  { path: 'order', component: OrderComponent, canActivate: [AuthGuard] },
+  { path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
@@ -38,25 +35,20 @@ const routes: Routes = [
     RegisterComponent,
     MainComponent,
     OrderComponent,
-    ShopComponent,
-    CartComponent,
+    ShopComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
     HttpClientModule,
     NgbModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: function  tokenGetter() {
-          return     localStorage.getItem('access_token');},
-        whitelistedDomains: ['localhost:3000'],
-        blacklistedRoutes: ['http://localhost:3000/auth/login']
-      }
-    })
+    ReactiveFormsModule,
 
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
